@@ -1,4 +1,5 @@
-import { Text, View } from "react-native";
+import TodoCard from "@/components/todoCard";
+import { Text, View, StatusBar } from "react-native";
 
 export default function Index() {
   return (
@@ -9,7 +10,9 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+      <StatusBar barStyle="light-content" />
+      <TodoCard />
+      <TodoCard />
     </View>
   );
 }
