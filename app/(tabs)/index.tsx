@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { View, ScrollView, StyleSheet, Text, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import TodoCard from "../../components/TodoCard";
 import { StatusBar } from "expo-status-bar";
-import TaskInput from "../../components/TaskInput"; // Ajuste o caminho conforme necessário
-import EmpityTasks from "../../components/EmpityTasks"; // Ajuste o caminho conforme necessário
+import TaskInput from "../../components/TaskInput";
+import EmpityTasks from "../../components/EmpityTasks";
+import { LinearGradient } from "expo-linear-gradient";
+import { useFocusEffect } from '@react-navigation/native';
 
 interface Task {
   id: number;
@@ -16,15 +18,25 @@ export default function Index() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
 
+  // Carrega as tarefas inicialmente
   useEffect(() => {
     loadTasks();
   }, []);
+
+  // Recarrega as tarefas sempre que a tela ganhar foco (útil ao voltar das Configurações)
+  useFocusEffect(
+    useCallback(() => {
+      loadTasks();
+    }, [])
+  );
 
   const loadTasks = async () => {
     const data = await AsyncStorage.getItem("tasks");
     if (data) {
       const parsed: Task[] = JSON.parse(data);
       setTasks(parsed);
+    } else {
+      setTasks([]); // Garante que zera se não tiver nada
     }
   };
 
@@ -59,11 +71,15 @@ export default function Index() {
   };
 
   return (
-    <View style={{ flex: 1, alignItems: "center", paddingTop: 50, backgroundColor: "#f5f5f5" }}>
-      
-      {/* Condicional: Se houver tarefas, mostra lista, senão mostra EmptyTasks */}
+    <LinearGradient
+      colors={["#1E90FF", "#87CEEB", "#f5f5f5"]}
+      style={{ flex: 1, alignItems: "center", paddingTop: 50 }}
+    >
       {tasks.length > 0 ? (
-        <ScrollView style={{ width: "100%", marginTop: 20 }}>
+        <ScrollView 
+          style={{ width: "100%", marginTop: 20 }}
+          contentContainerStyle={{ alignItems: "center", paddingBottom: 100 }}
+        >
           {tasks.map((task) => (
             <TodoCard
               key={task.id}
@@ -78,43 +94,41 @@ export default function Index() {
         <EmpityTasks />
       )}
 
-      {/* Botão flutuante abre o Modal */}
       <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.addButton}>
         <Text style={styles.addButtonText}>+</Text>
       </TouchableOpacity>
 
-      {/* Componente do Modal controlado por props */}
       <TaskInput 
         visible={modalVisible} 
         onClose={() => setModalVisible(false)} 
         onAddTask={addTask} 
       />
 
-      <StatusBar style="dark" />
-    </View>
+      <StatusBar style="light" />
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
   addButton: {
-    backgroundColor: "#1E90FF",
+    backgroundColor: "#fff",
     padding: 15,
     width: 60,
     height: 60,
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 30, // Deixa totalmente redondo
+    borderRadius: 30,
     position: "absolute",
     right: 20,
     bottom: 30,
-    elevation: 5, // Sombra no Android
-    shadowColor: "#000", // Sombra no iOS
+    elevation: 5,
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 3,
   },
   addButtonText: {
-    color: "#fff",
+    color: "#1E90FF",
     fontSize: 26,
     marginTop: -2
   },
