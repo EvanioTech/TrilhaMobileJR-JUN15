@@ -1,50 +1,82 @@
-# Welcome to your Expo app 👋
+Expo Task Manager 📝
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Um aplicativo de lista de tarefas moderno e intuitivo desenvolvido para ajudar na organização do dia a dia, com persistência de dados e uma interface agradável.
 
-## Get started
+📖 Descrição
 
-1. Install dependencies
+Este projeto é um gerenciador de tarefas (To-Do List) desenvolvido mobile-first. Ele permite que o usuário adicione novas tarefas, marque-as como concluídas e as remova da lista. O aplicativo conta com persistência de dados local (as tarefas não somem ao fechar o app), feedback visual para listas vazias e uma interface com gradientes modernos.
 
-   ```bash
-   npm install
-   ```
+Ideal para quem busca simplicidade e eficiência na organização pessoal.
 
-2. Start the app
+🚀 Tecnologias Utilizadas
 
-   ```bash
-   npx expo start
-   ```
+O projeto foi construído utilizando as seguintes tecnologias e bibliotecas:
 
-In the output, you'll find options to open the app in a
+React Native: Framework principal para desenvolvimento mobile.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+Expo: Plataforma para agilizar o desenvolvimento e build.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+TypeScript: Para tipagem estática e segurança no código.
 
-## Get a fresh project
+AsyncStorage: Para persistência de dados local no dispositivo.
 
-When you're ready, run:
+Expo Linear Gradient: Para estilização avançada de fundos.
 
-```bash
-npm run reset-project
-```
+Ionicons (@expo/vector-icons): Para ícones da interface.
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+📦 Instalação
 
-## Learn more
+Siga os passos abaixo para rodar o projeto em sua máquina local:
 
-To learn more about developing your project with Expo, look at the following resources:
+Clone o repositório:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+git clone [https://github.com/seu-usuario/nome-do-projeto.git](https://github.com/seu-usuario/nome-do-projeto.git)
+cd nome-do-projeto
 
-## Join the community
 
-Join our community of developers creating universal apps.
+Instale as dependências:
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+npm install
+# ou
+yarn install
+
+
+Inicie o projeto:
+
+npx expo start
+
+
+Execute no dispositivo:
+
+Use o aplicativo Expo Go no seu celular para escanear o QR Code gerado no terminal.
+
+Ou pressione a para abrir no emulador Android / i para o simulador iOS.
+
+📱 Como Usar
+
+Adicionar Tarefa: Toque no botão flutuante + no canto inferior direito. Um modal se abrirá; digite sua tarefa e confirme.
+
+Concluir Tarefa: Toque sobre o texto da tarefa ou no ícone de "quadrado" para marcá-la como feita (o texto ficará riscado e o ícone verde).
+
+Excluir Tarefa: Toque no ícone de lixeira vermelha à direita da tarefa para removê-la permanentemente.
+
+Configurações: Acesse a aba de configurações para opções como "Apagar todas as tarefas".
+
+(Opcional: Insira aqui screenshots ou GIFs do app rodando)
+![Screenshot da Home](caminho/para/imagem.png)
+
+📂 Estrutura de Pastas
+
+A organização principal do projeto segue a estrutura recomendada pelo Expo Router:
+
+/
+├── app/
+│   ├── (tabs)/
+│   │   ├── index.tsx        # Tela Principal (Lista de Tarefas)
+│   │   └── settings.tsx     # Tela de Configurações
+│   └── _layout.tsx          # Layout global
+├── components/
+│   ├── TodoCard.tsx         # Componente de visualização da tarefa individual
+│   ├── TaskInput.tsx        # Modal para inserção de novas tarefas
+│   └── EmpityTasks.tsx      # Componente visual para lista vazia
+└── README.md
