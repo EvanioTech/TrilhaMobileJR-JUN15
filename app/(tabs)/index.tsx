@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { View, TextInput, Button, ScrollView } from "react-native";
+import { View, TextInput, ScrollView, StyleSheet, Text, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import TodoCard from "../../components/TodoCard";
+import { StatusBar } from "expo-status-bar";
 interface Task {
   id: number;
   title: string;
@@ -29,6 +30,8 @@ export default function Index() {
   };
 
   const addTask = () => {
+    console.log("Tarefa adicionada");
+    if (text === "") alert("Por favor, insira uma tarefa.");
     if (!text.trim()) return;
 
     const newTask: Task = {
@@ -41,6 +44,7 @@ export default function Index() {
     setTasks(updated);
     saveTasks(updated);
     setText("");
+    
   };
 
   const toggleTask = (id: number) => {
@@ -61,7 +65,7 @@ export default function Index() {
     <View style={{ flex: 1, alignItems: "center", paddingTop: 50 }}>
       <TextInput
         placeholder="Digite uma tarefa..."
-        placeholderTextColor="#888"
+        placeholderTextColor="#333"
         value={text}
         onChangeText={setText}
         style={{
@@ -71,11 +75,11 @@ export default function Index() {
           borderWidth: 1,
           borderRadius: 10,
           marginBottom: 10,
-          color: "#fff",
+          color: "#333",
         }}
       />
 
-      <Button title="Adicionar" onPress={addTask} />
+      
 
       <ScrollView style={{ width: "100%", marginTop: 20 }}>
         {tasks.map((task) => (
@@ -88,6 +92,29 @@ export default function Index() {
           />
         ))}
       </ScrollView>
+      <TouchableOpacity onPress={addTask} style={styles.addButton}>
+        <Text style={styles.addButtonText}>+</Text>
+      </TouchableOpacity>
+      <StatusBar style="dark" />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  addButton: {
+    backgroundColor: "#1E90FF",
+    padding: 15,
+    width: 60,
+    height: 60,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+    position: "absolute",
+    right: 20,
+    bottom: 10,
+  },
+  addButtonText: {
+    color: "#fff",
+    fontSize: 26,
+  },
+});
