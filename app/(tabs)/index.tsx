@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
-import { View, TextInput, ScrollView, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { View, ScrollView, StyleSheet, Text, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import TodoCard from "../../components/TodoCard";
 import { StatusBar } from "expo-status-bar";
+import TaskInput from "../../components/TaskInput"; // Ajuste o caminho conforme necessário
+import EmpityTasks from "../../components/EmpityTasks"; // Ajuste o caminho conforme necessário
+
 interface Task {
   id: number;
   title: string;
@@ -11,7 +14,7 @@ interface Task {
 
 export default function Index() {
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [text, setText] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     loadTasks();
@@ -29,11 +32,7 @@ export default function Index() {
     await AsyncStorage.setItem("tasks", JSON.stringify(tasksToSave));
   };
 
-  const addTask = () => {
-    console.log("Tarefa adicionada");
-    if (text === "") alert("Por favor, insira uma tarefa.");
-    if (!text.trim()) return;
-
+  const addTask = (text: string) => {
     const newTask: Task = {
       id: Date.now(),
       title: text,
@@ -43,8 +42,6 @@ export default function Index() {
     const updated = [...tasks, newTask];
     setTasks(updated);
     saveTasks(updated);
-    setText("");
-    
   };
 
   const toggleTask = (id: number) => {
@@ -62,39 +59,37 @@ export default function Index() {
   };
 
   return (
-    <View style={{ flex: 1, alignItems: "center", paddingTop: 50 }}>
-      <TextInput
-        placeholder="Digite uma tarefa..."
-        placeholderTextColor="#333"
-        value={text}
-        onChangeText={setText}
-        style={{
-          width: "90%",
-          padding: 10,
-          borderColor: "#555",
-          borderWidth: 1,
-          borderRadius: 10,
-          marginBottom: 10,
-          color: "#333",
-        }}
-      />
-
+    <View style={{ flex: 1, alignItems: "center", paddingTop: 50, backgroundColor: "#f5f5f5" }}>
       
+      {/* Condicional: Se houver tarefas, mostra lista, senão mostra EmptyTasks */}
+      {tasks.length > 0 ? (
+        <ScrollView style={{ width: "100%", marginTop: 20 }}>
+          {tasks.map((task) => (
+            <TodoCard
+              key={task.id}
+              title={task.title}
+              completed={task.completed}
+              onToggle={() => toggleTask(task.id)}
+              onDelete={() => deleteTask(task.id)}
+            />
+          ))}
+        </ScrollView>
+      ) : (
+        <EmpityTasks />
+      )}
 
-      <ScrollView style={{ width: "100%", marginTop: 20 }}>
-        {tasks.map((task) => (
-          <TodoCard
-            key={task.id}
-            title={task.title}
-            completed={task.completed}
-            onToggle={() => toggleTask(task.id)}
-            onDelete={() => deleteTask(task.id)}
-          />
-        ))}
-      </ScrollView>
-      <TouchableOpacity onPress={addTask} style={styles.addButton}>
+      {/* Botão flutuante abre o Modal */}
+      <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.addButton}>
         <Text style={styles.addButtonText}>+</Text>
       </TouchableOpacity>
+
+      {/* Componente do Modal controlado por props */}
+      <TaskInput 
+        visible={modalVisible} 
+        onClose={() => setModalVisible(false)} 
+        onAddTask={addTask} 
+      />
+
       <StatusBar style="dark" />
     </View>
   );
@@ -108,13 +103,19 @@ const styles = StyleSheet.create({
     height: 60,
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 10,
+    borderRadius: 30, // Deixa totalmente redondo
     position: "absolute",
     right: 20,
-    bottom: 10,
+    bottom: 30,
+    elevation: 5, // Sombra no Android
+    shadowColor: "#000", // Sombra no iOS
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
   },
   addButtonText: {
     color: "#fff",
     fontSize: 26,
+    marginTop: -2
   },
 });
