@@ -64,7 +64,7 @@ const Settings = () => {
         <View style={styles.card}>
           <TouchableOpacity 
             style={styles.row} 
-            onPress={() => openLink("https://github.com/seu-usuario")}
+            onPress={() => openLink("https://github.com/EvanioTech/TrilhaMobileJR-JUN15")}
           >
             <View style={styles.rowIconText}>
               <IonIcons name="logo-github" size={22} color="#333" />
@@ -95,7 +95,7 @@ export default Settings;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f2f2f7", // Cor estilo iOS Settings
+    backgroundColor: "#f2f2f7", 
   },
   header: {
     paddingTop: 60,
