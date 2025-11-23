@@ -55,10 +55,10 @@ Abaixo estão as principais funcionalidades disponíveis no aplicativo:
 
 ---
 
-📂 Estrutura de Pastas
+## 📂 Estrutura de Pastas
+A organização do projeto segue o padrão do **Expo Router**:
 
-A organização do projeto segue o padrão do Expo Router:
-
+```text
 TrilhaMobileJR-JUN15/
  ├── app/                 # Rotas e telas (Expo Router)
  │    ├── (tabs)/         # Telas da navegação principal (Home, Settings)
